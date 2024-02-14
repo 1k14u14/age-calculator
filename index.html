@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400;1,800&display=swap" rel="stylesheet" />
+
+    <title>Frontend Mentor | Age calculator app</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+      body {
+        background-color: hsl(0, 0%, 94%);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      main {
+        width: 450px;
+        background-color: hsl(0, 0%, 100%);
+        padding: 30px;
+        border-radius: 15px 15px 25% 15px;
+        font-family: "Poppins", sans-serif;
+      }
+      input[type="text"] {
+        width: 100px;
+        font-size: 32px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        border: 1px solid hsl(0, 0%, 94%);
+      }
+      input#month {
+        margin: 0 20px;
+      }
+      hr {
+        margin-top: 40px;
+        margin-bottom: -40px;
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      button {
+        border-radius: 50%;
+        background-color: hsl(259, 100%, 65%);
+        padding: 15px;
+        border: none;
+        position: relative;
+        top: 10px;
+        left: 392px;
+      }
+      .date {
+        display: inline-block;
+        color: hsl(0, 1%, 44%);
+      }
+      .age {
+        font-style: italic;
+      }
+      h1 {
+        line-height: 0.5;
+        font-size: 52px;
+      }
+      .h1 {
+        color: hsl(259, 100%, 65%);
+      }
+      #day-err,
+      #month-err,
+      #year-err {
+        position: absolute;
+        color: red;
+        font-size: 10px;
+        font-style: italic;
+      }
+      label {
+        font-size: 10px;
+      }
+      .attribution {
+        font-size: 11px;
+        text-align: center;
+      }
+      .attribution a {
+        color: hsl(228, 45%, 44%);
+      }
+      @media only screen and (max-width: 375px) {
+        main {
+          width: 100%;
+        }
+        input[type="text"] {
+          width: 80px;
+        }
+        input#month {
+          margin: 0 10px;
+        }
+        button {
+          left: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form id="form" action="/" method="get">
+        <span class="date">
+          <label class="day" for="day">DAY</label><br />
+          <input type="text" name="day" id="day" placeholder="DD" />
+          <div id="day-err"></div>
+        </span>
+        <span class="date">
+          <label class="month" for="month">MONTH</label><br />
+          <input type="text" name="month" id="month" placeholder="MM" />
+          <div id="month-err"></div>
+        </span>
+        <span class="date">
+          <label class="year" for="year">YEAR</label><br />
+          <input type="text" name="year" id="year" placeholder="YYYY" />
+          <div id="year-err"></div>
+        </span>
+        <hr />
+        <button type="submit"><img src="./assets/images/icon-arrow.svg" alt="" width="30px" /></button>
+      </form>
+      <div class="age">
+        <h1><span class="h1 year">- -</span> years</h1>
+        <h1><span class="h1 month">- -</span> months</h1>
+        <h1><span class="h1 day">- -</span> days</h1>
+      </div>
+    </main>
+    <script>
+      const day = document.getElementById("day");
+      const month = document.getElementById("month");
+      const year = document.getElementById("year");
+      const form = document.getElementById("form");
+      const daye = document.getElementById("day-err");
+      const ind = document.querySelector("input#day");
+      const ld = document.querySelector("label.day");
+      const monthe = document.getElementById("month-err");
+      const inm = document.querySelector("input#month");
+      const lm = document.querySelector("label.month");
+      const yeare = document.getElementById("year-err");
+      const iny = document.querySelector("input#year");
+      const ly = document.querySelector("label.year");
+      const sy = document.querySelector("span.year");
+      const sm = document.querySelector("span.month");
+      const sd = document.querySelector("span.day");
+      let currentDate = new Date();
+
+      form.addEventListener("submit", (e) => {
+        let dmessage = [];
+        let mmessage = [];
+        let ymessage = [];
+        let vdaymessage = [];
+        let vmonthmessage = [];
+        let vyearmessage = [];
+        if (day.value === null || day.value === "") {
+          dmessage.push("This field is required");
+        }
+        if (month.value === null || month.value === "") {
+          mmessage.push("This field is required");
+        }
+        if (year.value === null || year.value === "") {
+          ymessage.push("This field is required");
+        }
+        if (month.value == 2) {
+          if (day.value > 29 && year.value % 4 == 0) {
+            vdaymessage.push("Must be a valid day");
+          } else if (day.value > 28 && year.value % 4 != 0) {
+            vdaymessage.push("Must be a valid day");
+          }
+        }
+        if (
+          (month.value == 1 && day.value > 31) ||
+          (month.value == 3 && day.value > 31) ||
+          (month.value == 4 && day.value > 30) ||
+          (month.value == 5 && day.value > 31) ||
+          (month.value == 6 && day.value > 30) ||
+          (month.value == 7 && day.value > 31) ||
+          (month.value == 8 && day.value > 31) ||
+          (month.value == 9 && day.value > 30) ||
+          (month.value == 10 && day.value > 31) ||
+          (month.value == 11 && day.value > 30) ||
+          (month.value == 12 && day.value > 31)
+        ) {
+          vdaymessage.push("Must be a valid day");
+        }
+        if (month.value > 12) {
+          vmonthmessage.push("Must be a valid month");
+        }
+        if (year.value > 2024) {
+          vyearmessage.push("Must be in the past");
+        }
+
+        if (dmessage.length > 0) {
+          e.preventDefault();
+          daye.innerText = dmessage.join(", ");
+          ind.style.borderColor = "red";
+          ld.style.color = "red";
+        }
+        if (mmessage.length > 0) {
+          e.preventDefault();
+          monthe.innerText = mmessage.join(", ");
+          inm.style.borderColor = "red";
+          lm.style.color = "red";
+        }
+        if (ymessage.length > 0) {
+          e.preventDefault();
+          yeare.innerText = ymessage.join(", ");
+          iny.style.borderColor = "red";
+          ly.style.color = "red";
+        }
+        if (vdaymessage.length > 0) {
+          e.preventDefault();
+          daye.innerText = vdaymessage.join(", ");
+          ind.style.borderColor = "red";
+          ld.style.color = "red";
+        }
+        if (vmonthmessage.length > 0) {
+          e.preventDefault();
+          monthe.innerText = vmonthmessage.join(", ");
+          inm.style.borderColor = "red";
+          lm.style.color = "red";
+        }
+        if (vyearmessage.length > 0) {
+          e.preventDefault();
+          yeare.innerText = vyearmessage.join(", ");
+          iny.style.borderColor = "red";
+          ly.style.color = "red";
+        }
+        if (dmessage.length == 0 && mmessage.length == 0 && ymessage.length == 0 && vdaymessage.length == 0 && vmonthmessage.length == 0 && vyearmessage.length == 0) {
+          e.preventDefault();
+          yeare.innerText = "";
+          iny.style.borderColor = "";
+          ly.style.color = "";
+          monthe.innerText = "";
+          inm.style.borderColor = "";
+          lm.style.color = "";
+          daye.innerText = "";
+          ind.style.borderColor = "";
+          ld.style.color = "";
+          var d2 = currentDate.getDate();
+          var m2 = 1 + currentDate.getMonth();
+          var y2 = currentDate.getFullYear();
+          var month2 = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+          if (day.value > d2) {
+            d2 = d2 + month2[m2 - 1];
+            m2 = m2 - 1;
+          }
+
+          if (month.value > m2) {
+            m2 = m2 + 12;
+            y2 = y2 - 1;
+          }
+
+          var d = d2 - day.value;
+          var m = m2 - month.value;
+          var y = y2 - year.value;
+
+          sy.innerText = y;
+          sm.innerText = m;
+          sd.innerText = d;
+        }
+      });
+    </script>
+
+    <!-- <div class="attribution">Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. Coded by <a href="#">Zikri Aulia</a>.</div> -->
+  </body>
+</html>
