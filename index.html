@@ -160,6 +160,15 @@
         let vdaymessage = [];
         let vmonthmessage = [];
         let vyearmessage = [];
+        yeare.innerText = "";
+        iny.style.borderColor = "";
+        ly.style.color = "";
+        monthe.innerText = "";
+        inm.style.borderColor = "";
+        lm.style.color = "";
+        daye.innerText = "";
+        ind.style.borderColor = "";
+        ld.style.color = "";
         if (day.value === null || day.value === "") {
           dmessage.push("This field is required");
         }
@@ -236,15 +245,6 @@
         }
         if (dmessage.length == 0 && mmessage.length == 0 && ymessage.length == 0 && vdaymessage.length == 0 && vmonthmessage.length == 0 && vyearmessage.length == 0) {
           e.preventDefault();
-          yeare.innerText = "";
-          iny.style.borderColor = "";
-          ly.style.color = "";
-          monthe.innerText = "";
-          inm.style.borderColor = "";
-          lm.style.color = "";
-          daye.innerText = "";
-          ind.style.borderColor = "";
-          ld.style.color = "";
           var d2 = currentDate.getDate();
           var m2 = 1 + currentDate.getMonth();
           var y2 = currentDate.getFullYear();
